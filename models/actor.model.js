@@ -32,7 +32,7 @@ const Actor = db.define(
       allowNull: false
     },
     status: {
-      // active | deleted
+      // active | disable | deleted
       type: DataTypes.STRING(10),
       allowNull: false,
       defaultValue: 'active'

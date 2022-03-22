@@ -2,7 +2,7 @@ const express = require('express');
 
 const {
   getAllUser,
-  getUserByID,
+  getUserById,
   createNewUser,
   updateUser,
   deleteUser
@@ -10,8 +10,8 @@ const {
 
 const router = express.Router();
 
-router.all('/').get(getAllUser).post(createNewUser);
+router.route('/').get(getAllUser).post(createNewUser);
 
-router.all('/:id').get(getUserByID).patch(updateUser).delete(deleteUser);
+router.route('/:id').get(getUserById).patch(updateUser).delete(deleteUser);
 
 module.exports = { usersRouter: router };

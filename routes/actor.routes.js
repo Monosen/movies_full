@@ -2,7 +2,7 @@ const express = require('express');
 
 const {
   getAllActor,
-  getActorByID,
+  getActorById,
   createNewActor,
   updateActor,
   deleteActor
@@ -10,8 +10,8 @@ const {
 
 const router = express.Router();
 
-router.all('/').get(getAllActor).post(createNewActor);
+router.route('/').get(getAllActor).post(createNewActor);
 
-router.all('/:id').get(getActorByID).patch(updateActor).delete(deleteActor);
+router.route('/:id').get(getActorById).patch(updateActor).delete(deleteActor);
 
 module.exports = { actorsRouter: router };
