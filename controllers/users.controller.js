@@ -36,12 +36,6 @@ exports.getUserById = catchAsync(async (req, res, next) => {
 exports.createNewUser = catchAsync(async (req, res, next) => {
   const { username, email, password, role } = req.body;
 
-  if (!username || !email || !password) {
-    return next(
-      new AppError(400, 'Must provide a valid name, email and password')
-    );
-  }
-
   const selt = await bcrypt.genSalt(13);
 
   const hashedPassword = await bcrypt.hash(password, selt);
@@ -50,7 +44,7 @@ exports.createNewUser = catchAsync(async (req, res, next) => {
     username,
     email,
     password: hashedPassword,
-    role: role || 'standard'
+    role
   });
 
   newUser.password = undefined;
@@ -92,7 +86,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
   await user.update({ username, email });
 
-  res.status(204).send();
+  res.sendStatus(204);
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
@@ -108,5 +102,5 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
   await user.update({ status: 'disable' });
 
-  res.status(204).send();
+  res.sendStatus(204);
 });

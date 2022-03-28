@@ -25,9 +25,10 @@ const User = db.define(
       allowNull: false
     },
     role: {
-      // admin | standard
+      // admin | invited
       type: DataTypes.STRING(20),
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'invited'
     },
     status: {
       // active | disable | deleted

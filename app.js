@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { usersRouter } = require('./routes/user.routes');
 const { actorsRouter } = require('./routes/actor.routes');
 const { moviesRouter } = require('./routes/movie.routes');
+const { ReviewsRouter } = require('./routes/review.routes');
 
 const { globalErrorHandler } = require('./controllers/error.controller');
 
@@ -26,6 +27,7 @@ else app.use(morgan('combined'));
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/actors', actorsRouter);
 app.use('/api/v1/movies', moviesRouter);
+app.use('/api/v1/reviews', ReviewsRouter);
 
 app.use('*', (req, res, next) => {
   next(new AppError(404, `${req.originalUrl} not found in this server.`));

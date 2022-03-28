@@ -40,3 +40,13 @@ exports.validateSession = catchAsync(async (req, res, next) => {
 
   next();
 });
+
+exports.protectAdmin = catchAsync(async (req, res, next) => {
+  const { role } = req.currentUser;
+
+  if (role !== 'admin') {
+    return next(new AppError(401, 'Access denied'));
+  }
+
+  next();
+});

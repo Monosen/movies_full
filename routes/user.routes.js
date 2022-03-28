@@ -10,12 +10,16 @@ const {
 } = require('../controllers/users.controller');
 
 const { validateSession } = require('../middlewares/auth.middleware');
+const {
+  createUserValidations,
+  validateResult
+} = require('../middlewares/validators.middleware');
 
 const router = express.Router();
 
 router.post('/login', loginUser);
 
-router.post(createNewUser);
+router.post('/', createUserValidations, validateResult, createNewUser);
 
 router.use(validateSession);
 

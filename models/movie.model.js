@@ -20,12 +20,13 @@ const Movie = db.define(
       allowNull: false
     },
     duration: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     rating: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     },
     img: {
       type: DataTypes.STRING(255),

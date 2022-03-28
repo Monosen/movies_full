@@ -19,6 +19,11 @@ const Review = db.define(
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -28,7 +33,7 @@ const Review = db.define(
       allowNull: false
     },
     status: {
-      // active | deleted
+      // active | disable
       type: DataTypes.STRING(10),
       allowNull: false,
       defaultValue: 'active'

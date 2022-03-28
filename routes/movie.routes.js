@@ -8,15 +8,36 @@ const {
   deleteMovie
 } = require('../controllers/movies.controller');
 
+const {
+  validateSession,
+  protectAdmin
+} = require('../middlewares/auth.middleware');
+const {
+  validateResult,
+  createMovieValidations
+} = require('../middlewares/validators.middleware');
+
 const { upload } = require('../util/multer');
 
 const router = express.Router();
 
+router.use(validateSession);
+
 router
   .route('/')
   .get(getAllMovie)
-  .post(upload.single('movieImg'), createNewMovie);
+  .post(
+    protectAdmin,
+    upload.single('img'),
+    createMovieValidations,
+    validateResult,
+    createNewMovie
+  );
 
-router.route('/:id').get(getMovieById).patch(updateMovie).delete(deleteMovie);
+router
+  .route('/:id')
+  .get(getMovieById)
+  .patch(protectAdmin, updateMovie)
+  .delete(protectAdmin, deleteMovie);
 
 module.exports = { moviesRouter: router };

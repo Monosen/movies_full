@@ -1,7 +1,10 @@
+const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
+
 const { Actor } = require('../models/actor.model');
 
 const { catchAsync } = require('../util/catchAsync');
 const { AppError } = require('../util/appError');
+const { storage } = require('../util/firebase');
 
 exports.getAllActor = catchAsync(async (req, res, next) => {
   const actors = await Actor.findAll({
@@ -27,16 +30,23 @@ exports.getActorById = catchAsync(async (req, res, next) => {
 exports.createNewActor = catchAsync(async (req, res, next) => {
   const { name, country, rating, age, profilecPic } = req.body;
 
-  if (!name || !country || !rating || !age || !profilecPic) {
-    return next(new AppError(400, 'error create actor'));
-  }
+  const imgRef = ref(
+    storage,
+    `imgs/actors/${Date.now()}-${Math.floor(Math.random() * 9)}-${
+      req.file.originalname
+    }`
+  );
+
+  const result = await uploadBytes(imgRef, req.file.buffer);
+
+  const imgURL = await getDownloadURL(ref(storage, result.metadata.fullPath));
 
   const newActor = await Actor.create({
     name,
     country,
     rating,
     age,
-    profilecPic
+    profilecPic: imgURL
   });
 
   res.status(201).json({ status: 'success', data: { newActor } });
@@ -54,7 +64,7 @@ exports.updateActor = catchAsync(async (req, res, next) => {
 
   await actor.update({ name, country, age });
 
-  res.status(204).send();
+  res.sendStatus(204);
 });
 
 exports.deleteActor = catchAsync(async (req, res, next) => {
@@ -68,5 +78,5 @@ exports.deleteActor = catchAsync(async (req, res, next) => {
 
   await actor.update({ status: 'disable' });
 
-  res.status(204).send();
+  res.sendStatus(204);
 });

@@ -1,4 +1,5 @@
 const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
+const { Actor } = require('../models/actor.model');
 
 const { Movie } = require('../models/movie.model');
 
@@ -7,7 +8,10 @@ const { catchAsync } = require('../util/catchAsync');
 const { storage } = require('../util/firebase');
 
 exports.getAllMovie = catchAsync(async (req, res, next) => {
-  const movies = await Movie.findAll({ where: { status: 'active' } });
+  const movies = await Movie.findAll({
+    where: { status: 'active' },
+    include: [{ model: Actor }]
+  });
 
   res.status(200).json({ status: 'success', data: { movies } });
 });
@@ -25,15 +29,11 @@ exports.getMovieById = catchAsync(async (req, res, next) => {
 });
 
 exports.createNewMovie = catchAsync(async (req, res, next) => {
-  const { title, description, duration, rating, genre } = req.body;
-
-  if (!title || !description || !duration || !rating || !genre) {
-    return next(new AppError(400, 'Movie not found'));
-  }
+  const { title, description, duration, rating, genre, actors } = req.body;
 
   const imgRef = ref(
     storage,
-    `imgs/${Date.now()}-${Math.floor(Math.random() * 9)}-${
+    `imgs/movies/${Date.now()}-${Math.floor(Math.random() * 9)}-${
       req.file.originalname
     }`
   );
@@ -51,6 +51,12 @@ exports.createNewMovie = catchAsync(async (req, res, next) => {
     genre
   });
 
+  const arr = actors.map(async (actorId) => {
+    return await ActorInMovie.create({ actorId, movieId: newMovie.id });
+  });
+
+  await Promise.all(arr);
+
   res.status(201).json({ status: 'success', data: { newMovie } });
 });
 
@@ -66,7 +72,7 @@ exports.updateMovie = catchAsync(async (req, res, next) => {
 
   await movie.update({ title, description, duration, genre });
 
-  res.status(204).send();
+  res.sendStatus(204);
 });
 
 exports.deleteMovie = catchAsync(async (req, res, next) => {
@@ -80,10 +86,5 @@ exports.deleteMovie = catchAsync(async (req, res, next) => {
 
   await movie.update({ status: 'disable' });
 
-  res.status(204).send();
+  res.sendStatus(204);
 });
-
-/* match /{allPaths=**} {
-      allow read, write: if
-          request.time < timestamp.date(2022, 4, 20);
-    } */

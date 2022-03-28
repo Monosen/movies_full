@@ -16,19 +16,20 @@ const Actor = db.define(
       allowNull: false
     },
     country: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(100),
       allowNull: false
     },
     rating: {
-      type: DataTypes.STRING(255),
-      allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
     },
     age: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
     profilecPic: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING,
       allowNull: false
     },
     status: {
