@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize'
 
-const { db } = require('../util/database');
+import { db } from '../util/database'
 
 const Actor = db.define(
   'actors',
@@ -40,6 +40,6 @@ const Actor = db.define(
     }
   },
   { timestamps: false }
-);
+)
 
-module.exports = { Actor };
+export { Actor }

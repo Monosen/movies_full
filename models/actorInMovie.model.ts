@@ -1,9 +1,9 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize'
 
-const { db } = require('../util/database');
+import { db } from '../util/database'
 
-const { Actor } = require('./actor.model');
-const { Movie } = require('./movie.model');
+import { Actor } from './actor.model'
+import { Movie } from './movie.model'
 
 const ActorInMovie = db.define(
   'actorsInMovies',
@@ -26,6 +26,6 @@ const ActorInMovie = db.define(
     }
   },
   { timestamps: false }
-);
+)
 
-module.exports = { ActorInMovie };
+export { ActorInMovie }

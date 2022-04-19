@@ -1,9 +1,9 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize'
 
-const { db } = require('../util/database');
+import { db } from '../util/database'
 
-const Movie = db.define(
-  'movies',
+const Review = db.define(
+  'reviews',
   {
     id: {
       primaryKey: true,
@@ -15,12 +15,8 @@ const Movie = db.define(
       type: DataTypes.STRING(100),
       allowNull: false
     },
-    description: {
+    comment: {
       type: DataTypes.STRING(255),
-      allowNull: false
-    },
-    duration: {
-      type: DataTypes.INTEGER,
       allowNull: false
     },
     rating: {
@@ -28,22 +24,22 @@ const Movie = db.define(
       allowNull: false,
       defaultValue: 1
     },
-    img: {
-      type: DataTypes.STRING(255),
+    userId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
-    genre: {
-      type: DataTypes.STRING(50),
+    movieId: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     status: {
-      // active | deleted
+      // active | disable
       type: DataTypes.STRING(10),
       allowNull: false,
       defaultValue: 'active'
     }
   },
   { timestamps: false }
-);
+)
 
-module.exports = { Movie };
+export { Review }

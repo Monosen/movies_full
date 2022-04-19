@@ -1,7 +1,7 @@
-const { Sequelize } = require('sequelize');
-const dotenv = require('dotenv');
+import { Sequelize } from 'sequelize'
+import dotenv from 'dotenv'
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: './.env' })
 
 const db = new Sequelize({
   host: process.env.DB_HOST,
@@ -11,6 +11,6 @@ const db = new Sequelize({
   port: 5432,
   dialect: 'postgres',
   logging: false
-});
+})
 
-module.exports = { db };
+export { db }
